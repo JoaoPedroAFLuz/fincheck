@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 @Module({
   imports: [
     JwtModule.register({
+      global: true,
       secret: env.jwtSecret,
       signOptions: { expiresIn: '7d' },
     }),

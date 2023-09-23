@@ -20,7 +20,9 @@ export class AuthService {
   async signup(signupDto: SignupDto) {
     const { firstName, lastName, email, password } = signupDto;
 
-    const emailAlreadyInUse = await this.usersRepository.findByEmail(email);
+    const emailAlreadyInUse = await this.usersRepository.findUnique({
+      where: { email },
+    });
 
     if (emailAlreadyInUse) {
       throw new ConflictException('Email already in use');
@@ -67,7 +69,9 @@ export class AuthService {
   async authenticate(authenticateDto: AuthenticateDto) {
     const { email, password } = authenticateDto;
 
-    const user = await this.usersRepository.findByEmail(email);
+    const user = await this.usersRepository.findUnique({
+      where: { email },
+    });
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
