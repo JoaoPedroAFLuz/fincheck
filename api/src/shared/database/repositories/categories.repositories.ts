@@ -10,4 +10,8 @@ export class CategoriesRepository {
   async findAllByUserId(findManyDto: Prisma.CategoryFindManyArgs) {
     return this.prismaService.category.findMany(findManyDto);
   }
+
+  async findUnique(findUniqueDto: Prisma.CategoryFindUniqueArgs) {
+    return this.prismaService.category.findUnique(findUniqueDto);
+  }
 }

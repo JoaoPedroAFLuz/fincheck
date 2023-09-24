@@ -12,6 +12,7 @@ export class CategoriesService {
         userId,
       },
       select: {
+        id: true,
         name: true,
         icon: true,
         type: true,
