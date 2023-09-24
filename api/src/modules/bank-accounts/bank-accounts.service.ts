@@ -44,14 +44,37 @@ export class BankAccountsService {
     });
 
     if (!bankAccount) {
-      throw new NotFoundException();
+      throw new NotFoundException("Bank account don't found");
     }
 
     return { bankAccount };
   }
 
-  update(id: number, updateBankAccountDto: UpdateBankAccountDto) {
-    return `This action updates a #${id} bankAccount`;
+  async update(
+    userId: string,
+    bankAccountId: string,
+    updateBankAccountDto: UpdateBankAccountDto,
+  ) {
+    const isOwner = await this.bankAccountsRepository.findUnique({
+      where: {
+        userId,
+        id: bankAccountId,
+      },
+    });
+
+    if (!isOwner) {
+      throw new NotFoundException("Bank account don't found");
+    }
+
+    const { name, initialBalance, type, color } = updateBankAccountDto;
+
+    return this.bankAccountsRepository.update({
+      where: {
+        userId,
+        id: bankAccountId,
+      },
+      data: { name, initialBalance, type, color },
+    });
   }
 
   remove(id: number) {
