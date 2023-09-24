@@ -14,4 +14,8 @@ export class BankAccountsRepository {
   findMany(findManyDto: Prisma.BankAccountFindManyArgs) {
     return this.prismaService.bankAccount.findMany(findManyDto);
   }
+
+  findUnique(findUniqueDto: Prisma.BankAccountFindUniqueArgs) {
+    return this.prismaService.bankAccount.findUnique(findUniqueDto);
+  }
 }

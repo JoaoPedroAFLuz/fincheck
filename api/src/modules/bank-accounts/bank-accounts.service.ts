@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { BankAccountsRepository } from '@/shared/database/repositories/bank-accounts.repositories';
 import { CreateBankAccountDto } from './dto/create-bank-account.dto';
@@ -32,8 +32,22 @@ export class BankAccountsService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bankAccount`;
+  async findOneByUserIdAndByBankAccountId(
+    userId: string,
+    bankAccountId: string,
+  ) {
+    const bankAccount = await this.bankAccountsRepository.findUnique({
+      where: {
+        userId,
+        id: bankAccountId,
+      },
+    });
+
+    if (!bankAccount) {
+      throw new NotFoundException();
+    }
+
+    return { bankAccount };
   }
 
   update(id: number, updateBankAccountDto: UpdateBankAccountDto) {
