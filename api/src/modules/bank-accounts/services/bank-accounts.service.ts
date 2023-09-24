@@ -20,7 +20,6 @@ export class BankAccountsService {
       include: {
         transactions: {
           select: {
-            name: true,
             value: true,
             type: true,
           },
@@ -53,7 +52,6 @@ export class BankAccountsService {
       include: {
         transactions: {
           select: {
-            name: true,
             value: true,
             type: true,
           },
