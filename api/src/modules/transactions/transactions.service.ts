@@ -14,8 +14,12 @@ export class TransactionsService {
     private readonly validateCategoryOwnershipService: ValidateCategoryOwnershipService,
   ) {}
 
-  findAll() {
-    return `This action returns all transactions`;
+  findAllByUserId(userId: string) {
+    return this.transactionsRepository.findMany({
+      where: {
+        userId,
+      },
+    });
   }
 
   findOne(transactionId: string) {
