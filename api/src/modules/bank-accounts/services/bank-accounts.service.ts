@@ -32,7 +32,7 @@ export class BankAccountsService {
     });
 
     if (!bankAccount) {
-      throw new NotFoundException("Bank account don't found");
+      throw new NotFoundException('Bank account not found');
     }
 
     return { bankAccount };
