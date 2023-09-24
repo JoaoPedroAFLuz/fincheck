@@ -13,10 +13,31 @@ export class BankAccountsService {
   ) {}
 
   async findAllByUserId(userId: string) {
-    return this.bankAccountsRepository.findMany({
+    const bankAccounts = await this.bankAccountsRepository.findMany({
       where: {
         userId,
       },
+      include: {
+        transactions: {
+          select: {
+            name: true,
+            value: true,
+            type: true,
+          },
+        },
+      },
+    });
+
+    return bankAccounts.map(({ transactions, ...bankAccount }) => {
+      const currentBalance = transactions.reduce(
+        (acc, transaction) =>
+          transaction.type === 'INCOME'
+            ? acc + transaction.value
+            : acc - transaction.value,
+        bankAccount.initialBalance,
+      );
+
+      return { ...bankAccount, currentBalance };
     });
   }
 
@@ -29,13 +50,32 @@ export class BankAccountsService {
         userId,
         id: bankAccountId,
       },
+      include: {
+        transactions: {
+          select: {
+            name: true,
+            value: true,
+            type: true,
+          },
+        },
+      },
     });
 
     if (!bankAccount) {
       throw new NotFoundException('Bank account not found');
     }
 
-    return { bankAccount };
+    const { transactions, ...bankAccountDto } = bankAccount;
+
+    const currentBalance = transactions.reduce(
+      (acc, transaction) =>
+        transaction.type === 'INCOME'
+          ? acc + transaction.value
+          : acc - transaction.value,
+      bankAccountDto.initialBalance,
+    );
+
+    return { ...bankAccountDto, currentBalance };
   }
 
   create(userId: string, createBankAccountDto: CreateBankAccountDto) {
