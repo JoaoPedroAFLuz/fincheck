@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
+import { ValidateBankAccountOwnershipService } from '@/modules/bank-accounts/services/validate-bank-account-ownership.service';
+import { ValidateCategoryOwnershipService } from '@/modules/categories/services/validate-category-ownership.service';
 import { TransactionsRepository } from '@/shared/database/repositories/transactions.repositories';
-import { ValidateBankAccountOwnershipService } from '../bank-accounts/services/validate-bank-account-ownership.service';
-import { ValidateCategoryOwnershipService } from '../categories/services/validate-category-ownership.service';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
+import { CreateTransactionDto } from '../dto/create-transaction.dto';
+import { UpdateTransactionDto } from '../dto/update-transaction.dto';
+import { ValidateTransactionOwnershipService } from './validate-transaction-ownership.service';
 
 @Injectable()
 export class TransactionsService {
   constructor(
     private readonly transactionsRepository: TransactionsRepository,
+    private readonly validateTransactionOwnershipService: ValidateTransactionOwnershipService,
     private readonly validateBankAccountOwnershipService: ValidateBankAccountOwnershipService,
     private readonly validateCategoryOwnershipService: ValidateCategoryOwnershipService,
   ) {}
@@ -45,8 +47,34 @@ export class TransactionsService {
     });
   }
 
-  update(transactionId: string, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${transactionId} transaction`;
+  async update(
+    userId: string,
+    transactionId: string,
+    updateTransactionDto: UpdateTransactionDto,
+  ) {
+    const { bankAccountId, categoryId, name, value, date, type } =
+      updateTransactionDto;
+
+    await this.validateEntitiesOwnership({
+      userId,
+      transactionId,
+      bankAccountId,
+      categoryId,
+    });
+
+    return this.transactionsRepository.update({
+      where: {
+        id: transactionId,
+      },
+      data: {
+        bankAccountId,
+        categoryId,
+        name,
+        value,
+        date,
+        type,
+      },
+    });
   }
 
   remove(transactionId: string) {
@@ -55,14 +83,21 @@ export class TransactionsService {
 
   private async validateEntitiesOwnership({
     userId,
+    transactionId,
     bankAccountId,
     categoryId,
   }: {
     userId: string;
+    transactionId?: string;
     bankAccountId: string;
     categoryId: string;
   }) {
     await Promise.all([
+      transactionId &&
+        this.validateTransactionOwnershipService.validate(
+          userId,
+          transactionId,
+        ),
       this.validateBankAccountOwnershipService.validate(userId, bankAccountId),
       this.validateCategoryOwnershipService.validate(userId, categoryId),
     ]);
