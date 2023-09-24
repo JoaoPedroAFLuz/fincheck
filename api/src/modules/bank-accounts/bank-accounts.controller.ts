@@ -26,7 +26,7 @@ export class BankAccountsController {
   }
 
   @Get(':bankAccountId')
-  findOneByUserAndByBankAccount(
+  findOneByUser(
     @ActiveUserId() userId: string,
     @Param('bankAccountId', ParseUUIDPipe) bankAccountId: string,
   ) {

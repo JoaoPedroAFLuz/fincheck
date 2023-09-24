@@ -19,13 +19,16 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @Get()
-  findAll(@ActiveUserId() userId: string) {
+  findAllByUser(@ActiveUserId() userId: string) {
     return this.transactionsService.findAllByUserId(userId);
   }
 
   @Get(':transactionId')
-  findOne(@Param('transactionId') transactionId: string) {
-    return this.transactionsService.findOne(transactionId);
+  findOneByUser(
+    @ActiveUserId() userId: string,
+    @Param('transactionId') transactionId: string,
+  ) {
+    return this.transactionsService.findOneByUserId(userId, transactionId);
   }
 
   @Post()

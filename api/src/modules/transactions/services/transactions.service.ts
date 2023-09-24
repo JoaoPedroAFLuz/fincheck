@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ValidateBankAccountOwnershipService } from '@/modules/bank-accounts/services/validate-bank-account-ownership.service';
 import { ValidateCategoryOwnershipService } from '@/modules/categories/services/validate-category-ownership.service';
@@ -24,8 +24,19 @@ export class TransactionsService {
     });
   }
 
-  findOne(transactionId: string) {
-    return `This action returns a #${transactionId} transaction`;
+  async findOneByUserId(userId: string, transactionId: string) {
+    const transaction = await this.transactionsRepository.findUnique({
+      where: {
+        userId,
+        id: transactionId,
+      },
+    });
+
+    if (!transaction) {
+      throw new NotFoundException('Transaction not found');
+    }
+
+    return transaction;
   }
 
   async create(userId: string, createTransactionDto: CreateTransactionDto) {
