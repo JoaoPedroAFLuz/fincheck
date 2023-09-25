@@ -1,73 +1,85 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# 💸 API do fincheck
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+REST API desenvolvida em [Node.js](https://nodejs.org/) utilizando o framework [NestJS](https://nestjs.com/). Foram utilizados também: 
+e tecnologias: 
+- [TypeScript](https://www.typescriptlang.org/)
+- [Prisma](https://www.prisma.io/)
+- [Bcryptjs](https://www.npmjs.com/package/bcryptjs)
+- JWT
+- Princípios SOLID
+- Clean Code
+- Entre outros...
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+API disponibilizada em: https://fincheck-api-b7ug.onrender.com
 
-## Description
+Arquivo do [Insomnia](https://insomnia.rest/) com exemplos de rotas para ser importado no aplicativo: [insomnia.json](https://github.com/JoaoPedroAFLuz/fincheck/blob/main/api/insomnia.json)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## ⚙ Instalação
+Caso queria instalar a API, basta seguir os seguintes passos:
 
-## Installation
+- Clone o repositório com o comando:
 
-```bash
-$ yarn install
+``` bash
+git clone https://github.com/JoaoPedroAFLuz/fincheck
 ```
 
-## Running the app
-
+- Acesse a pasta da API:
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+cd api
 ```
 
-## Test
-
+- Instale as dependências: 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+yarn
 ```
 
-## Support
+## 🚀 Inicialização
+Requisitos:
+- URL de conexão para um banco [Postgres](https://www.postgresql.org/)
+- Arquivo .env com base no [.env.example](https://github.com/JoaoPedroAFLuz/fincheck/blob/main/api/.env.example) fornecido. Nele você irá precisar adicionar a URL do banco Postgres, uma chave quer irá servir como a JWT Secret e caso queira rodar a aplicação em uma porta diferente da 3000, você poderá estar adicionando-a nesse arquivo.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+Primeira inicialização
+- Execute o seguinte comando para rodar as migrations em ambiente de desenvolvimento:
+```bash
+yarn prisma migrate dev
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Inicializar aplicação
+- Execute o comando abaixo para rodar a aplicação em desenvolvimento:
+```bash
+yarn start:dev
+```
 
-## License
+Após isso a aplicação estará rodando em localhost:3000 (ou na porta informada).
+No terminal é possível ver quais são as rotas mapeadas pela aplicação e caso queira poderá importar o arquivo [insomnia.json](https://github.com/JoaoPedroAFLuz/fincheck/blob/main/api/insomnia.json) no aplicativo [Insomnia](https://insomnia.rest/). Nele você terá exemplos de como executar cada uma das funcionalidades da aplicação.
 
-Nest is [MIT licensed](LICENSE).
+## Entidades e funcionalidades implementadas:
+
+### Autenticação
+- [x] Criar novo usuário
+- [x] Login
+
+### Usuários
+- [x] Buscar informações do usuário logado
+
+### Contas bancárias
+- [x] Buscar todas do usuário logado
+- [x] Buscar conta do usuário logado pelo id da conta
+- [x] Criar conta bancária
+- [x] Atualizar conta bancária
+- [x] Deletar conta bancária
+
+### Categorias
+- [x] Buscar todas
+- [x] Buscar categoria pelo id
+- [x] Criar categoria
+- [x] Atualizar categoria
+- [x] Deletar categoria
+
+### Transações
+- [x] Buscar todas
+- [x] Buscar transação pelo id
+- [x] Criar transação
+- [x] Atualizar transação
+- [x] Deletar transação
