@@ -9,12 +9,12 @@ export function AuthLayout() {
       <div className="flex h-full w-full flex-col items-center justify-center gap-16 lg:w-1/2">
         <Logo className="h-6 text-gray-500" />
 
-        <div className="w-full max-w-[504px] mt-16 px-8">
+        <div className="mt-16 w-full max-w-[504px] px-8">
           <Outlet />
         </div>
       </div>
 
-      <div className="h-full w-1/2 p-8 hidden flex-col items-center justify-center lg:flex">
+      <div className="hidden h-full w-1/2 flex-col items-center justify-center p-8 lg:flex">
         <img
           src={illustration}
           className="h-full max-h-[960px] w-full max-w-[656px] select-none rounded-[32px] object-cover"
