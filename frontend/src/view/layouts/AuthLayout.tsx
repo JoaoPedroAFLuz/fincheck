@@ -9,7 +9,7 @@ export function AuthLayout() {
       <div className="flex h-full w-full flex-col items-center justify-center gap-16 lg:w-1/2">
         <Logo className="h-6 text-gray-500" />
 
-        <div className="mt-16 w-full max-w-[504px] px-8">
+        <div className="w-full max-w-[504px] px-8">
           <Outlet />
         </div>
       </div>
@@ -32,3 +32,4 @@ export function AuthLayout() {
     </div>
   );
 }
+
