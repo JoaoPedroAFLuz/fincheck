@@ -1,8 +1,8 @@
 module.exports = {
-  singleQuote: false,
+  singleQuote: true,
   endOfLine: "crlf",
   tailwindConfig: "./tailwind.config.js",
-  plugins: [require("prettier-plugin-tailwindcss")],
+  plugins: ["prettier-plugin-tailwindcss"],
   overrides: [
     {
       files: ".prettierrc",
@@ -12,3 +12,4 @@ module.exports = {
     },
   ],
 };
+
