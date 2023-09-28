@@ -1,6 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
+
+import { authService } from '@/services/authService';
+import { LoginParams } from '@/services/authService/login';
 
 const loginFormSchema = z.object({
   email: z
@@ -20,15 +26,26 @@ export function useLoginController() {
     formState: { errors },
     handleSubmit: hookFormHandleSubmit,
     register,
-    ...form
   } = useForm<LoginForm>({
     resolver: zodResolver(loginFormSchema),
   });
 
-  const handleSubmit = hookFormHandleSubmit((data: LoginForm) => {
-    console.log({ data });
+  const { isLoading, mutateAsync } = useMutation({
+    mutationFn: async (data: LoginParams) => authService.login(data),
   });
 
-  return { form, errors, register, handleSubmit };
+  const handleSubmit = hookFormHandleSubmit(async (data: LoginForm) => {
+    try {
+      await mutateAsync(data);
+
+      toast.success('Login realizado com sucesso!');
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+    }
+  });
+
+  return { errors, isLoading, register, handleSubmit };
 }
 

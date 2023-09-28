@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 import { authService } from '@/services/authService';
 import { SignupParams } from '@/services/authService/signup';
-import { AxiosError } from 'axios';
-import toast from 'react-hot-toast';
 
 const registerFormSchema = z
   .object({
