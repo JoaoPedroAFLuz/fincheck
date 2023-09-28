@@ -2,11 +2,14 @@ import { Link } from 'react-router-dom';
 
 import { Button } from '@/view/components/Button';
 import { Input } from '@/view/components/Input';
+import { useLoginController } from './useLoginController';
 
 export function Login() {
+  const { errors, handleSubmit, register } = useLoginController();
+
   return (
     <>
-      <header className="flex flex-col items-center gap-4">
+      <header className="flex flex-col items-center gap-4 text-center">
         <h1 className="text-2xl font-bold tracking-[-1px]">
           Entre em sua conta
         </h1>
@@ -20,12 +23,27 @@ export function Login() {
         </p>
       </header>
 
-      <form className="mt-[60px] flex w-full flex-col gap-4">
-        <Input name="email" type="email" placeholder="E-mail" />
+      <form
+        onSubmit={handleSubmit}
+        className="mt-[60px] flex w-full flex-col gap-4"
+      >
+        <Input
+          type="email"
+          placeholder="E-mail"
+          error={errors.email?.message}
+          {...register('email')}
+        />
 
-        <Input name="password" type="password" placeholder="Senha" />
+        <Input
+          type="password"
+          placeholder="Senha"
+          error={errors.password?.message}
+          {...register('password')}
+        />
 
-        <Button type="submit">Entrar</Button>
+        <Button type="submit" className="mt-2">
+          Entrar
+        </Button>
       </form>
     </>
   );
