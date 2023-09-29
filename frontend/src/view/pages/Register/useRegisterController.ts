@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
+import { useAuth } from '@/app/hooks/useAuth';
 import { authService } from '@/services/authService';
 import { SignupParams } from '@/services/authService/signup';
 
@@ -47,13 +48,17 @@ export function useRegisterController() {
     resolver: zodResolver(registerFormSchema),
   });
 
+  const { login } = useAuth();
+
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: async (data: SignupParams) => authService.signup(data),
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data: RegisterForm) => {
     try {
-      await mutateAsync(data);
+      const { accessToken } = await mutateAsync(data);
+
+      login(accessToken);
 
       toast.success('Cadastro realizado com sucesso!');
     } catch (error) {

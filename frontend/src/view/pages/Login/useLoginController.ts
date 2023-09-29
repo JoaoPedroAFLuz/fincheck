@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
+import { useAuth } from '@/app/hooks/useAuth';
 import { authService } from '@/services/authService';
 import { LoginParams } from '@/services/authService/login';
 
@@ -30,14 +31,17 @@ export function useLoginController() {
     resolver: zodResolver(loginFormSchema),
   });
 
+  const { login } = useAuth();
+
   const { isLoading, mutateAsync } = useMutation({
     mutationFn: async (data: LoginParams) => authService.login(data),
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data: LoginForm) => {
     try {
-      await mutateAsync(data);
+      const { accessToken } = await mutateAsync(data);
 
+      login(accessToken);
       toast.success('Login realizado com sucesso!');
     } catch (error) {
       if (error instanceof AxiosError) {
