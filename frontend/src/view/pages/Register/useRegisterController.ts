@@ -6,8 +6,8 @@ import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 import { useAuth } from '@/app/hooks/useAuth';
-import { authService } from '@/services/authService';
-import { SignupParams } from '@/services/authService/signup';
+import { authService } from '@/app/services/authService';
+import { SignupParams } from '@/app/services/authService/signup';
 
 const registerFormSchema = z
   .object({

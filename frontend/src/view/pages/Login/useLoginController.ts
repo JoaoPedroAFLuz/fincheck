@@ -6,8 +6,8 @@ import toast from 'react-hot-toast';
 import { z } from 'zod';
 
 import { useAuth } from '@/app/hooks/useAuth';
-import { authService } from '@/services/authService';
-import { LoginParams } from '@/services/authService/login';
+import { authService } from '@/app/services/authService';
+import { LoginParams } from '@/app/services/authService/login';
 
 const loginFormSchema = z.object({
   email: z
