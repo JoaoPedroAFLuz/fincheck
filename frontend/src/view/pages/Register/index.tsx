@@ -10,9 +10,9 @@ export function Register() {
   return (
     <>
       <header className="flex flex-col items-center gap-4 text-center">
-        <h1 className="text-2xl font-bold tracking-[-1px]">Crie sua conta</h1>
+        <h1 className="text-2xl font-bold tracking-tighter">Crie sua conta</h1>
 
-        <p className="space-x-2 tracking-[-0.5px]">
+        <p className="space-x-2 tracking-tight">
           <span className="text-gray-700">Já possui uma conta?</span>
 
           <Link to="/login" className="font-medium text-teal-900">

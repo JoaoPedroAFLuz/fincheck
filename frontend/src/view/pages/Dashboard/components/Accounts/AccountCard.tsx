@@ -2,6 +2,7 @@ import { cn } from '@/app/utils/cn';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { BankAccountTypeIcon } from '@/view/components/icons/BankAccountTypeIcon';
 import { iconsMap } from '@/view/components/icons/BankAccountTypeIcon/iconsMap';
+import { useAccountController } from './useAccountController';
 
 interface AccountCardProps {
   name: string;
@@ -18,6 +19,8 @@ export function AccountCard({
   color,
   className,
 }: AccountCardProps) {
+  const { areValuesVisible } = useAccountController();
+
   return (
     <div
       className={cn(
@@ -29,13 +32,18 @@ export function AccountCard({
       <div>
         <BankAccountTypeIcon type={type} />
 
-        <span className="mt-4 block font-medium tracking-[-0.5px] text-gray-800">
+        <span className="mt-4 block font-medium tracking-tight text-gray-800">
           {name}
         </span>
       </div>
 
       <div>
-        <span className="block font-medium tracking-[-0.5px] text-gray-800">
+        <span
+          className={cn(
+            'block font-medium tracking-tight text-gray-800',
+            !areValuesVisible && 'blur',
+          )}
+        >
           {formatCurrency(balance)}
         </span>
         <small className="text-sm text-gray-600">Saldo atual</small>

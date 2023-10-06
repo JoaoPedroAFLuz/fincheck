@@ -161,6 +161,10 @@ export default {
           900: '#D9480F',
         },
       },
+      letterSpacing: {
+        tight: '-0.5px',
+        tighter: '-1px',
+      },
     },
   },
   plugins: [],
