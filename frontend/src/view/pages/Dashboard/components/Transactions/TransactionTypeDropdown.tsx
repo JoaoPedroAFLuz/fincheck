@@ -1,8 +1,9 @@
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+
 import { DropdownMenu } from '@/view/components/DropdownMenu';
 import { TransactionsIcon } from '@/view/components/icons/BankAccountTypeIcon/TransactionsIcon';
 import { ExpensesIcon } from '@/view/components/icons/ExpensesIcon';
 import { IncomeIcon } from '@/view/components/icons/IncomeIcon';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 export function TransactionTypeDropdown() {
   return (
