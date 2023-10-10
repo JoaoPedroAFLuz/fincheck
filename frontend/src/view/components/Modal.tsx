@@ -8,11 +8,18 @@ interface ModalProps {
   open: boolean;
   children: React.ReactNode;
   rightAction?: React.ReactNode;
+  onClose?(): void;
 }
 
-export function Modal({ title, open, children, rightAction }: ModalProps) {
+export function Modal({
+  title,
+  open,
+  children,
+  rightAction,
+  onClose,
+}: ModalProps) {
   return (
-    <Dialog.Root open={open}>
+    <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Trigger />
 
       <Dialog.Portal>
@@ -30,7 +37,10 @@ export function Modal({ title, open, children, rightAction }: ModalProps) {
           )}
         >
           <header className="flex h-12 items-center justify-between text-gray-800">
-            <button className="flex h-12 w-12 items-center justify-center outline-none">
+            <button
+              onClick={onClose}
+              className="flex h-12 w-12 items-center justify-center outline-none"
+            >
               <Cross2Icon className="h-6 w-6" />
             </button>
 

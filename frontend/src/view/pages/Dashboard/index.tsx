@@ -1,5 +1,4 @@
 import { Logo } from '@/view/components/Logo';
-import { Modal } from '@/view/components/Modal';
 import { UserMenu } from '@/view/components/UserMenu';
 import { Accounts } from './components/Accounts';
 import { DashboardProvider } from './components/DashboardContext';
@@ -26,10 +25,6 @@ export function Dashboard() {
         </main>
 
         <Fab />
-
-        <Modal open={true} title="Header">
-          Content
-        </Modal>
       </div>
     </DashboardProvider>
   );
