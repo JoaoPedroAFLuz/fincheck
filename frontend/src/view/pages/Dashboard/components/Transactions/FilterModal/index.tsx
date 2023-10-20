@@ -7,7 +7,6 @@ import { useFiltersModal } from './useFiltersModal';
 
 interface FilterModalProps {
   open: boolean;
-  // mockedAccounts: typeof mockedAccounts;
   onClose(): void;
 }
 

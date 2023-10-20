@@ -9,7 +9,13 @@ export function useAccountController() {
     isEnd: false,
   });
 
-  const { areValuesVisible, toggleValueVisibility } = useDashboard();
+  const {
+    areValuesVisible,
+    isNewAccountModalOpen,
+    toggleValueVisibility,
+    openNewAccountModal,
+    closeNewAccountModal,
+  } = useDashboard();
 
   const windowWidth = useWindowWidth();
 
@@ -19,7 +25,10 @@ export function useAccountController() {
     windowWidth,
     areValuesVisible,
     isLoading: false,
+    isNewAccountModalOpen,
     toggleValueVisibility,
+    openNewAccountModal,
+    closeNewAccountModal,
     setSliderState,
   };
 }

@@ -18,6 +18,7 @@ export function Accounts() {
     areValuesVisible,
     isLoading,
     toggleValueVisibility,
+    openNewAccountModal,
     setSliderState,
   } = useAccountController();
 
@@ -55,7 +56,10 @@ export function Accounts() {
                   Minhas Contas
                 </strong>
 
-                <button className="mt-4 flex h-52 w-full flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-teal-600">
+                <button
+                  onClick={openNewAccountModal}
+                  className="mt-4 flex h-52 w-full flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-teal-600"
+                >
                   <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-dashed border-white">
                     <PlusIcon className="h-6 w-6" />
                   </div>
