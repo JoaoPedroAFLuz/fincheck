@@ -30,12 +30,12 @@ export function NewAccountModal() {
           <Input type="text" name="accountName" placeholder="Nome da Conta" />
 
           <Select
+            placeholder="Selecione um tipo de conta"
             options={[
               { value: 'CHECKING', label: 'Conta Corrente' },
               { value: 'INVESTMENTS', label: 'Investimentos' },
               { value: 'CASH', label: 'Dinheiro Físico' },
             ]}
-            placeholder="Selecione um tipo de conta"
           />
 
           <ColorsDropdownInput />
