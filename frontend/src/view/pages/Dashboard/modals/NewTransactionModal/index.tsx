@@ -45,7 +45,7 @@ export function NewTransactionModal() {
             placeholder="Categoria"
             options={[
               { value: 'CHECKING', label: 'Conta Corrente' },
-              { value: 'INVESTMENTS', label: 'Investimentos' },
+              { value: 'INVESTMENT', label: 'Investimento' },
               { value: 'CASH', label: 'Dinheiro Físico' },
             ]}
           />
@@ -54,7 +54,7 @@ export function NewTransactionModal() {
             placeholder={isExpense ? 'Pagar com' : 'Receber com'}
             options={[
               { value: 'CHECKING', label: 'Conta Corrente' },
-              { value: 'INVESTMENTS', label: 'Investimentos' },
+              { value: 'INVESTMENT', label: 'Investimento' },
               { value: 'CASH', label: 'Dinheiro Físico' },
             ]}
           />

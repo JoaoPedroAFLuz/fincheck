@@ -13,21 +13,26 @@ interface SelectProps {
     value: string;
     label: string;
   }[];
+  value?: 'CHECKING' | 'INVESTMENT' | 'CASH';
   placeholder?: string;
   error?: string;
   className?: string;
+  onChange?: (value: 'CHECKING' | 'INVESTMENT' | 'CASH') => void;
 }
 
 export function Select({
   options,
+  value,
   placeholder,
   error,
   className,
+  onChange,
 }: SelectProps) {
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState(value);
 
-  function handleSelect(value: string) {
+  function handleSelect(value: 'CHECKING' | 'INVESTMENT' | 'CASH') {
     setSelectedValue(value);
+    onChange?.(value);
   }
 
   return (
@@ -42,7 +47,7 @@ export function Select({
           {placeholder}
         </label>
 
-        <RdxSelect.Root onValueChange={handleSelect}>
+        <RdxSelect.Root value={value} onValueChange={handleSelect}>
           <RdxSelect.Trigger
             className={cn(
               'relative h-[52px] w-full rounded-lg border border-gray-500 bg-white px-3 pt-4 text-left text-gray-800 outline-none transition-all focus:border-gray-800',

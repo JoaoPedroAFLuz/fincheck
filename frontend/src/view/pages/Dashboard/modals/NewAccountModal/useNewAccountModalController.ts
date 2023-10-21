@@ -1,8 +1,57 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+
+import { bankAccountsService } from '@/app/services/bankAccountsService';
+import toast from 'react-hot-toast';
 import { useDashboard } from '../../components/DashboardContext/useDashboard';
+
+const newAccountSchema = z.object({
+  initialBalance: z.string().nonempty('Saldo inicial é obrigatório'),
+  name: z.string().nonempty('Nome da conta é obrigatória'),
+  type: z.enum(['CHECKING', 'INVESTMENT', 'CASH'], {
+    required_error: 'Tipo de conta é obrigatório',
+  }),
+  color: z.string().nonempty('Cor é obrigatória'),
+});
+
+type NewAccount = z.infer<typeof newAccountSchema>;
 
 export function useNewAccountModalController() {
   const { isNewAccountModalOpen, closeNewAccountModal } = useDashboard();
 
-  return { isNewAccountModalOpen, closeNewAccountModal };
+  const {
+    control,
+    formState: { errors },
+    register,
+    reset,
+    handleSubmit: hookFormSubmit,
+  } = useForm<NewAccount>({
+    resolver: zodResolver(newAccountSchema),
+  });
+
+  const { isLoading, mutateAsync } = useMutation(bankAccountsService.create);
+
+  const handleSubmit = hookFormSubmit(async (data) => {
+    try {
+      mutateAsync({ ...data, initialBalance: parseFloat(data.initialBalance) });
+      toast.success('Conta criada com sucesso!');
+      closeNewAccountModal();
+      reset();
+    } catch (error) {
+      toast.error('Erro ao criar conta');
+    }
+  });
+
+  return {
+    control,
+    errors,
+    isNewAccountModalOpen,
+    isLoading,
+    register,
+    handleSubmit,
+    closeNewAccountModal,
+  };
 }
 
