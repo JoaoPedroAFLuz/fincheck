@@ -13,6 +13,7 @@ import { useAccountController } from './useAccountController';
 export function Accounts() {
   const {
     accounts,
+    currentBalance,
     sliderState,
     windowWidth,
     areValuesVisible,
@@ -36,7 +37,7 @@ export function Accounts() {
             <span className="tracking-tight">Saldo Total</span>
             <div className="flex flex-row items-center gap-2">
               <strong className={cn('text-2xl', !areValuesVisible && 'blur')}>
-                {formatCurrency(1000)}
+                {formatCurrency(currentBalance)}
               </strong>
 
               <button
@@ -97,32 +98,16 @@ export function Accounts() {
                     />
                   </div>
 
-                  <SwiperSlide>
-                    <AccountCard
-                      name="Nubank"
-                      type="CHECKING"
-                      balance={123.45}
-                      color="#7950f2"
-                    />
-                  </SwiperSlide>
-
-                  <SwiperSlide>
-                    <AccountCard
-                      name="Neon"
-                      type="CHECKING"
-                      balance={120}
-                      color="blue"
-                    />
-                  </SwiperSlide>
-
-                  <SwiperSlide>
-                    <AccountCard
-                      name="Carteira"
-                      type="CASH"
-                      balance={20}
-                      color="red"
-                    />
-                  </SwiperSlide>
+                  {accounts.map(({ name, type, currentBalance, color }) => (
+                    <SwiperSlide>
+                      <AccountCard
+                        name={name}
+                        type={type}
+                        balance={currentBalance}
+                        color={color}
+                      />
+                    </SwiperSlide>
+                  ))}
                 </Swiper>
               </div>
             )}
