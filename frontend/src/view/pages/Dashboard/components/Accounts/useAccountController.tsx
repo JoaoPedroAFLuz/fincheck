@@ -18,6 +18,7 @@ export function useAccountController() {
     isNewAccountModalOpen,
     toggleValueVisibility,
     openNewAccountModal,
+    openEditAccountModal,
     closeNewAccountModal,
   } = useDashboard();
 
@@ -44,6 +45,7 @@ export function useAccountController() {
     isNewAccountModalOpen,
     toggleValueVisibility,
     openNewAccountModal,
+    openEditAccountModal,
     closeNewAccountModal,
     setSliderState,
   };

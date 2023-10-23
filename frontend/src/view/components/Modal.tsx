@@ -46,7 +46,7 @@ export function Modal({
 
             <h1 className="text-lg font-bold tracking-tighter">{title}</h1>
 
-            <div className="h-12 w-12 items-center justify-center">
+            <div className="flex h-12 w-12 items-center justify-center">
               {rightAction}
             </div>
           </header>

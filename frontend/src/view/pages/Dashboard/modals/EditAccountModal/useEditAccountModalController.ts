@@ -5,10 +5,14 @@ import toast from 'react-hot-toast';
 import z from 'zod';
 
 import { bankAccountsService } from '@/app/services/bankAccountsService';
+import { currencyStringToNumber } from '@/app/utils/currencyStringToNumber';
 import { useDashboard } from '../../components/DashboardContext/useDashboard';
 
-const newAccountSchema = z.object({
-  initialBalance: z.string().nonempty('Saldo inicial é obrigatório'),
+const EditAccountSchema = z.object({
+  initialBalance: z.union([
+    z.string().nonempty('Saldo inicial é obrigatório'),
+    z.number(),
+  ]),
   name: z.string().nonempty('Nome da conta é obrigatória'),
   type: z.enum(['CHECKING', 'INVESTMENT', 'CASH'], {
     required_error: 'Tipo de conta é obrigatório',
@@ -16,10 +20,11 @@ const newAccountSchema = z.object({
   color: z.string().nonempty('Cor é obrigatória'),
 });
 
-type NewAccount = z.infer<typeof newAccountSchema>;
+type EditAccount = z.infer<typeof EditAccountSchema>;
 
-export function useNewAccountModalController() {
-  const { isNewAccountModalOpen, closeNewAccountModal } = useDashboard();
+export function useEditAccountModalController() {
+  const { accountBeingEdited, isEditAccountModalOpen, closeEditAccountModal } =
+    useDashboard();
 
   const {
     control,
@@ -27,40 +32,48 @@ export function useNewAccountModalController() {
     register,
     reset,
     handleSubmit: hookFormSubmit,
-  } = useForm<NewAccount>({
-    resolver: zodResolver(newAccountSchema),
+  } = useForm<EditAccount>({
+    resolver: zodResolver(EditAccountSchema),
+    defaultValues: {
+      name: accountBeingEdited?.name,
+      type: accountBeingEdited?.type,
+      color: accountBeingEdited?.color,
+      initialBalance: accountBeingEdited?.initialBalance,
+    },
   });
 
   const queryClient = useQueryClient();
 
-  const { isLoading, mutateAsync } = useMutation(bankAccountsService.create);
+  const { isLoading, mutateAsync } = useMutation(bankAccountsService.update);
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
       await mutateAsync({
         ...data,
-        initialBalance: parseFloat(data.initialBalance),
+        id: accountBeingEdited!.id,
+        initialBalance: currencyStringToNumber(data.initialBalance),
       });
 
       queryClient.invalidateQueries({
         queryKey: ['bankAccounts'],
       });
-      toast.success('Conta criada com sucesso!');
-      closeNewAccountModal();
+      toast.success('Conta editada com sucesso!');
+      closeEditAccountModal();
       reset();
     } catch (error) {
-      toast.error('Erro ao criar conta');
+      toast.error('Erro ao salvar as alterações');
     }
   });
 
   return {
     control,
     errors,
-    isNewAccountModalOpen,
+    accountBeingEdited,
+    isEditAccountModalOpen,
     isLoading,
     register,
     handleSubmit,
-    closeNewAccountModal,
+    closeEditAccountModal,
   };
 }
 
