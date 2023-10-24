@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import z from 'zod';
 
 import { bankAccountsService } from '@/app/services/bankAccountsService';
 import { currencyStringToNumber } from '@/app/utils/currencyStringToNumber';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useDashboard } from '../../components/DashboardContext/useDashboard';
 
 const EditAccountSchema = z.object({
@@ -23,6 +24,9 @@ const EditAccountSchema = z.object({
 type EditAccount = z.infer<typeof EditAccountSchema>;
 
 export function useEditAccountModalController() {
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
+
   const { accountBeingEdited, isEditAccountModalOpen, closeEditAccountModal } =
     useDashboard();
 
@@ -42,13 +46,23 @@ export function useEditAccountModalController() {
     },
   });
 
+  function openDeleteAccountModal() {
+    setIsDeleteAccountModalOpen(true);
+  }
+
+  function closeDeleteAccountModal() {
+    setIsDeleteAccountModalOpen(false);
+  }
+
   const queryClient = useQueryClient();
 
-  const { isLoading, mutateAsync } = useMutation(bankAccountsService.update);
+  const { isLoading, mutateAsync: updateAccount } = useMutation(
+    bankAccountsService.update,
+  );
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      await mutateAsync({
+      await updateAccount({
         ...data,
         id: accountBeingEdited!.id,
         initialBalance: currencyStringToNumber(data.initialBalance),
@@ -65,15 +79,39 @@ export function useEditAccountModalController() {
     }
   });
 
+  const { isLoading: isLoadingDelete, mutateAsync: removeAccount } =
+    useMutation(bankAccountsService.remove);
+
+  async function handleDeleteAccount() {
+    try {
+      await removeAccount(accountBeingEdited!.id);
+
+      queryClient.invalidateQueries({
+        queryKey: ['bankAccounts'],
+      });
+
+      closeEditAccountModal();
+      closeDeleteAccountModal();
+      toast.success('Conta deletada com sucesso!');
+    } catch {
+      toast.error('Erro ao deletar a conta');
+    }
+  }
+
   return {
     control,
     errors,
     accountBeingEdited,
     isEditAccountModalOpen,
+    isDeleteAccountModalOpen,
     isLoading,
+    isLoadingDelete,
     register,
     handleSubmit,
+    handleDeleteAccount,
     closeEditAccountModal,
+    openDeleteAccountModal,
+    closeDeleteAccountModal,
   };
 }
 
