@@ -45,6 +45,7 @@ export function useNewAccountModalController() {
       queryClient.invalidateQueries({
         queryKey: ['bankAccounts'],
       });
+
       toast.success('Conta criada com sucesso!');
       closeNewAccountModal();
       reset();

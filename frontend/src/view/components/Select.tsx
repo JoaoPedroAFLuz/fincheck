@@ -13,11 +13,11 @@ interface SelectProps {
     value: string;
     label: string;
   }[];
-  value?: 'CHECKING' | 'INVESTMENT' | 'CASH';
+  value?: string;
   placeholder?: string;
   error?: string;
   className?: string;
-  onChange?: (value: 'CHECKING' | 'INVESTMENT' | 'CASH') => void;
+  onChange?: (value: string) => void;
 }
 
 export function Select({
@@ -30,7 +30,7 @@ export function Select({
 }: SelectProps) {
   const [selectedValue, setSelectedValue] = useState(value);
 
-  function handleSelect(value: 'CHECKING' | 'INVESTMENT' | 'CASH') {
+  function handleSelect(value: string) {
     setSelectedValue(value);
     onChange?.(value);
   }

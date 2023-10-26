@@ -57,6 +57,7 @@ export function EditAccountModal() {
 
           <div className="flex items-center gap-2">
             <span className="text-lg tracking-tight text-gray-600">R$</span>
+
             <Controller
               name="initialBalance"
               defaultValue="0"
