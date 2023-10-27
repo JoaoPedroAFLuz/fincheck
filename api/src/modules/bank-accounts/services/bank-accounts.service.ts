@@ -25,6 +25,9 @@ export class BankAccountsService {
           },
         },
       },
+      orderBy: {
+        name: 'asc',
+      },
     });
 
     return bankAccounts.map(({ transactions, ...bankAccount }) => {

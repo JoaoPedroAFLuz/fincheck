@@ -45,6 +45,9 @@ export class TransactionsService {
           },
         },
       },
+      orderBy: {
+        date: 'desc',
+      },
     });
   }
 
