@@ -1,62 +1,71 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import z from 'zod';
 
+import { Transaction } from '@/app/entities/transactions';
 import { useBankAccounts } from '@/app/hooks/useBankAccounts';
 import { useCategories } from '@/app/hooks/useCategories';
 import { transactionService } from '@/app/services/transactionsService';
 import { currencyStringToNumber } from '@/app/utils/currencyStringToNumber';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useDashboard } from '../../components/DashboardContext/useDashboard';
+import toast from 'react-hot-toast';
 
 const transactionSchema = z.object({
-  value: z.string().nonempty('Valor é obrigatório'),
+  value: z.union([z.number(), z.string().nonempty('Valor é obrigatório')]),
   name: z.string().nonempty('Nome é obrigatório'),
   categoryId: z.string().nonempty('Categoria é obrigatória'),
   bankAccountId: z.string().nonempty('Conta é obrigatória'),
   date: z.date(),
 });
 
-type NewTransaction = z.infer<typeof transactionSchema>;
+type EditTransaction = z.infer<typeof transactionSchema>;
 
-export function useNewTransactionModalController() {
-  const {
-    newTransactionType,
-    isNewTransactionModalOpen,
-    closeNewTransactionModal,
-  } = useDashboard();
+interface UseEditTransactionModalControllerProps {
+  transaction: Transaction | null;
+  onClose(): void;
+}
 
+export function useEditTransactionModalController({
+  transaction,
+  onClose,
+}: UseEditTransactionModalControllerProps) {
   const { accounts } = useBankAccounts();
   const { categories: categoriesList } = useCategories();
 
   const categories = useMemo(() => {
     return categoriesList.filter(
-      (category) => category.type === newTransactionType,
+      (category) => category.type === transaction?.type,
     );
-  }, [categoriesList, newTransactionType]);
+  }, [categoriesList, transaction]);
 
   const {
     control,
     formState: { errors },
     handleSubmit: hookFormHandleSubmit,
     register,
-    reset,
-  } = useForm<NewTransaction>({
+  } = useForm<EditTransaction>({
     resolver: zodResolver(transactionSchema),
+    defaultValues: {
+      name: transaction?.name,
+      bankAccountId: transaction?.bankAccountId,
+      categoryId: transaction?.category?.id,
+      value: transaction?.value,
+      date: transaction?.date ? new Date(transaction.date) : new Date(),
+    },
   });
 
   const queryClient = useQueryClient();
 
-  const { isLoading, mutateAsync } = useMutation(transactionService.create);
+  const { isLoading, mutateAsync } = useMutation(transactionService.update);
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
       await mutateAsync({
         ...data,
+        id: transaction!.id,
+        type: transaction!.type,
         value: currencyStringToNumber(data.value),
-        type: newTransactionType!,
         date: data.date.toISOString(),
       });
 
@@ -64,18 +73,22 @@ export function useNewTransactionModalController() {
         queryKey: ['transactions'],
       });
 
+      queryClient.invalidateQueries({
+        queryKey: [],
+      });
+
       toast.success(
-        newTransactionType === 'EXPENSE'
-          ? 'Despesa criada com sucesso!'
-          : 'Receita criada com sucesso!',
+        transaction!.type === 'EXPENSE'
+          ? 'Despesa editada com sucesso!'
+          : 'Receita editada com sucesso!',
       );
-      reset();
-      closeNewTransactionModal();
+
+      onClose();
     } catch {
       toast.error(
-        newTransactionType === 'EXPENSE'
-          ? 'Erro ao criar despesa'
-          : 'Erro ao criar receita',
+        transaction!.type === 'EXPENSE'
+          ? 'Erro ao editar despesa'
+          : 'Erro ao editar receita',
       );
     }
   });
@@ -85,12 +98,9 @@ export function useNewTransactionModalController() {
     errors,
     accounts,
     categories,
-    newTransactionType,
-    isNewTransactionModalOpen,
     isLoading,
     register,
     handleSubmit,
-    closeNewTransactionModal,
   };
 }
 

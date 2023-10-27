@@ -1,5 +1,6 @@
 export interface Transaction {
   id: string;
+  bankAccountId: string;
   name: string;
   value: number;
   date: string;
@@ -11,5 +12,5 @@ export interface Transaction {
   };
 }
 
-export type TransactionType = 'EXPENSE' | 'INCOME';
+export type TransactionType = 'INCOME' | 'EXPENSE';
 
