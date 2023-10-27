@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { MONTHS } from '@/app/config/constants';
 import { cn } from '@/app/utils/cn';
 import { formatCurrency } from '@/app/utils/formatCurrency';
+import { formatDate } from '@/app/utils/formatDate';
 import { Spinner } from '@/view/components/Spinner';
 import { FilterIcon } from '@/view/components/icons/FilterIcon';
 import { CategoryIcon } from '@/view/components/icons/categories/CategoryIcon';
@@ -16,6 +17,7 @@ import emptyState from '@/assets/empty-state.svg';
 
 export function Transactions() {
   const {
+    filters,
     transactions,
     areValuesVisible,
     isInitialLoading,
@@ -23,6 +25,7 @@ export function Transactions() {
     isFiltersModalOpen,
     handleOpenFiltersModal,
     handleCloseFiltersModal,
+    handleChangeFilters,
   } = useTransactionsController();
 
   const hasTransactions = transactions.length > 0;
@@ -47,7 +50,15 @@ export function Transactions() {
             </div>
 
             <div className="relative mt-6">
-              <Swiper centeredSlides slidesPerView={3} spaceBetween={16}>
+              <Swiper
+                initialSlide={filters.monthIndex}
+                centeredSlides
+                slidesPerView={3}
+                spaceBetween={16}
+                onSlideChange={(swiper) => {
+                  handleChangeFilters('monthIndex')(swiper.realIndex);
+                }}
+              >
                 <SliderNavigation />
 
                 {MONTHS.map((month, index) => (
@@ -86,57 +97,46 @@ export function Transactions() {
               </div>
             )}
 
-            {hasTransactions && !isLoading && (
-              <>
-                <div className="flex items-center gap-4 rounded-2xl bg-white p-4">
+            {hasTransactions &&
+              !isLoading &&
+              transactions.map((transaction) => (
+                <div
+                  key={transaction.id}
+                  className="flex items-center gap-4 rounded-2xl bg-white p-4"
+                >
                   <div className="flex flex-1 items-center gap-3">
-                    <CategoryIcon type="expense" category="food" />
+                    <CategoryIcon
+                      type={
+                        transaction.type === 'EXPENSE' ? 'expense' : 'income'
+                      }
+                      category={transaction.category?.icon}
+                    />
 
                     <div>
                       <strong className="font-bold tracking-tight text-gray-800">
-                        Almoço
+                        {transaction.name}
                       </strong>
+
                       <small className="block text-xs text-gray-600">
-                        04/06/2023
+                        {formatDate(new Date(transaction.date))}
                       </small>
                     </div>
                   </div>
 
                   <span
                     className={cn(
-                      'font-medium tracking-tight text-red-800',
+                      'font-medium tracking-tight',
                       !areValuesVisible && 'blur',
+                      transaction.type === 'INCOME'
+                        ? 'text-green-800'
+                        : 'text-red-800',
                     )}
                   >
-                    {formatCurrency(-32.5)}
+                    {transaction.type === 'INCOME' ? '+' : '-'}
+                    {formatCurrency(transaction.value)}
                   </span>
                 </div>
-
-                <div className="flex items-center gap-4 rounded-2xl bg-white p-4">
-                  <div className="flex flex-1 items-center gap-3">
-                    <CategoryIcon type="income" />
-
-                    <div>
-                      <strong className="font-bold tracking-tight text-gray-800">
-                        Salário
-                      </strong>
-                      <small className="block text-xs text-gray-600">
-                        01/06/2023
-                      </small>
-                    </div>
-                  </div>
-
-                  <span
-                    className={cn(
-                      'font-medium tracking-tight text-green-800',
-                      !areValuesVisible && 'blur',
-                    )}
-                  >
-                    {formatCurrency(10000)}
-                  </span>
-                </div>
-              </>
-            )}
+              ))}
           </main>
 
           <FilterModal

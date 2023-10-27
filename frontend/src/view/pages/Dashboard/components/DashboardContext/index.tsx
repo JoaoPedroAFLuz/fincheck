@@ -1,9 +1,10 @@
 import { createContext, useCallback, useState } from 'react';
 
 import { BankAccount } from '@/app/entities/bankAccount';
+import { TransactionType } from '@/app/entities/transactions';
 
 interface DashboardContextValue {
-  newTransactionType: 'INCOME' | 'EXPENSE' | null;
+  newTransactionType: TransactionType | null;
   accountBeingEdited: BankAccount | null;
   areValuesVisible: boolean;
   isNewAccountModalOpen: boolean;
@@ -14,7 +15,7 @@ interface DashboardContextValue {
   closeNewAccountModal(): void;
   openEditAccountModal(bankAccount: BankAccount): void;
   closeEditAccountModal(): void;
-  openNewTransactionModal(type: 'INCOME' | 'EXPENSE'): void;
+  openNewTransactionModal(type: TransactionType): void;
   closeNewTransactionModal(): void;
 }
 
@@ -26,9 +27,8 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   const [isEditAccountModalOpen, setIsEditAccountModalOpen] = useState(false);
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
     useState(false);
-  const [newTransactionType, setNewTransactionType] = useState<
-    'INCOME' | 'EXPENSE' | null
-  >(null);
+  const [newTransactionType, setNewTransactionType] =
+    useState<TransactionType | null>(null);
   const [accountBeingEdited, setAccountBeingEdited] =
     useState<BankAccount | null>(null);
 
@@ -58,7 +58,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   }, [setIsEditAccountModalOpen]);
 
   const openNewTransactionModal = useCallback(
-    (type: 'INCOME' | 'EXPENSE') => {
+    (type: TransactionType) => {
       setNewTransactionType(type);
       setIsNewTransactionModalOpen(true);
     },

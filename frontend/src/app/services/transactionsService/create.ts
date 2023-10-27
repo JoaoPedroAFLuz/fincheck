@@ -1,3 +1,4 @@
+import { TransactionType } from '@/app/entities/transactions';
 import { httpClient } from '../httpClient';
 
 interface CreateTransactionParams {
@@ -6,7 +7,7 @@ interface CreateTransactionParams {
   name: string;
   value: number;
   date: string;
-  type: 'EXPENSE' | 'INCOME';
+  type: TransactionType;
 }
 
 export async function create(params: CreateTransactionParams) {
