@@ -20,7 +20,7 @@ export function ConfirmDeleteModal({
   return (
     <Modal open title="Excluir" onClose={onClose}>
       <div className="flex flex-col items-center justify-center gap-6 text-center">
-        <div className="flex h-[52] w-[52px] items-center justify-center rounded-full bg-red-50">
+        <div className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-red-50">
           <TrashIcon className="h-6 w-6 text-red-900" />
         </div>
         <p className="w-[180px] font-bold tracking-tight text-gray-800">

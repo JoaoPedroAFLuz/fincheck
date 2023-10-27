@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
@@ -30,6 +30,8 @@ export function useEditTransactionModalController({
   transaction,
   onClose,
 }: UseEditTransactionModalControllerProps) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const { accounts } = useBankAccounts();
   const { categories: categoriesList } = useCategories();
 
@@ -57,11 +59,13 @@ export function useEditTransactionModalController({
 
   const queryClient = useQueryClient();
 
-  const { isLoading, mutateAsync } = useMutation(transactionService.update);
+  const { isLoading, mutateAsync: updateTransaction } = useMutation(
+    transactionService.update,
+  );
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await mutateAsync({
+      await updateTransaction({
         ...data,
         id: transaction!.id,
         type: transaction!.type,
@@ -93,14 +97,59 @@ export function useEditTransactionModalController({
     }
   });
 
+  const { isLoading: isLoadingDelete, mutateAsync: removeTransaction } =
+    useMutation(transactionService.remove);
+
+  async function handleDeleteAccount() {
+    try {
+      await removeTransaction(transaction!.id);
+
+      queryClient.invalidateQueries({
+        queryKey: ['transactions'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['bankAccounts'],
+      });
+
+      toast.success(
+        transaction!.type === 'EXPENSE'
+          ? 'Despesa excluída com sucesso!'
+          : 'Receita excluída com sucesso!',
+      );
+
+      onClose();
+      handleCloseDeleteModal();
+    } catch {
+      toast.error(
+        transaction!.type === 'EXPENSE'
+          ? 'Erro ao excluir despesa'
+          : 'Erro ao excluir receita',
+      );
+    }
+  }
+
+  function handleOpenDeleteModal() {
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal() {
+    setIsDeleteModalOpen(false);
+  }
+
   return {
     control,
     errors,
     accounts,
     categories,
     isLoading,
+    isLoadingDelete,
+    isDeleteModalOpen,
     register,
     handleSubmit,
+    handleDeleteAccount,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
   };
 }
 
