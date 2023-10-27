@@ -4,14 +4,16 @@ import { useAuth } from '@/app/hooks/useAuth';
 import { DropdownMenu } from './DropdownMenu';
 
 export function UserMenu() {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
+
+  const initials = `${user?.firstName.charAt(0)}${user?.lastName.charAt(0)}`;
 
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-teal-50">
           <span className="text-sm font-medium tracking-tight text-teal-900">
-            JL
+            {initials.toUpperCase()}
           </span>
         </div>
       </DropdownMenu.Trigger>

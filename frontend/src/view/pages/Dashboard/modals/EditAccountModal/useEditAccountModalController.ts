@@ -90,11 +90,15 @@ export function useEditAccountModalController() {
         queryKey: ['bankAccounts'],
       });
 
+      queryClient.invalidateQueries({
+        queryKey: ['transactions'],
+      });
+
       closeEditAccountModal();
       closeDeleteAccountModal();
-      toast.success('Conta deletada com sucesso!');
+      toast.success('Conta excluída com sucesso!');
     } catch {
-      toast.error('Erro ao deletar a conta');
+      toast.error('Erro ao excluir a conta');
     }
   }
 
