@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { createContext, useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -41,6 +41,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     staleTime: Infinity,
   });
 
+  const queryClient = useQueryClient();
+
   const login = useCallback(
     (accessToken: string) => {
       localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
@@ -55,7 +57,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(() => {
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
     setLoggedIn(false);
-  }, []);
+    queryClient.clear();
+  }, [queryClient]);
 
   useEffect(() => {
     if (isError) {
