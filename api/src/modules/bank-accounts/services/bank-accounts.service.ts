@@ -22,6 +22,7 @@ export class BankAccountsService {
           select: {
             value: true,
             type: true,
+            date: true,
           },
         },
       },
@@ -31,13 +32,15 @@ export class BankAccountsService {
     });
 
     return bankAccounts.map(({ transactions, ...bankAccount }) => {
-      const currentBalance = transactions.reduce(
-        (acc, transaction) =>
-          transaction.type === 'INCOME'
-            ? acc + transaction.value
-            : acc - transaction.value,
-        bankAccount.initialBalance,
-      );
+      const currentBalance = transactions
+        .filter((transaction) => transaction.date <= new Date())
+        .reduce(
+          (acc, transaction) =>
+            transaction.type === 'INCOME'
+              ? acc + transaction.value
+              : acc - transaction.value,
+          bankAccount.initialBalance,
+        );
 
       return { ...bankAccount, currentBalance };
     });
