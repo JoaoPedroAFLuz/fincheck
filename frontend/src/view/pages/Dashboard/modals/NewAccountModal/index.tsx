@@ -15,14 +15,14 @@ export function NewAccountModal() {
     isLoading,
     register,
     handleSubmit,
-    closeNewAccountModal,
+    handleCloseModal,
   } = useNewAccountModalController();
 
   return (
     <Modal
       title="Nova Conta"
       open={isNewAccountModalOpen}
-      onClose={closeNewAccountModal}
+      onClose={handleCloseModal}
     >
       <form className="w-full" onSubmit={handleSubmit}>
         <div>

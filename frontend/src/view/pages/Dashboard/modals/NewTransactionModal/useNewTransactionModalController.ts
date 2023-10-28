@@ -21,6 +21,14 @@ const transactionSchema = z.object({
 
 type NewTransaction = z.infer<typeof transactionSchema>;
 
+const defaultTransaction: NewTransaction = {
+  value: '0',
+  name: '',
+  categoryId: '',
+  bankAccountId: '',
+  date: new Date(),
+};
+
 export function useNewTransactionModalController() {
   const {
     newTransactionType,
@@ -45,6 +53,7 @@ export function useNewTransactionModalController() {
     reset,
   } = useForm<NewTransaction>({
     resolver: zodResolver(transactionSchema),
+    defaultValues: defaultTransaction,
   });
 
   const queryClient = useQueryClient();
@@ -73,7 +82,8 @@ export function useNewTransactionModalController() {
           ? 'Despesa criada com sucesso!'
           : 'Receita criada com sucesso!',
       );
-      reset();
+
+      reset(defaultTransaction);
       closeNewTransactionModal();
     } catch {
       toast.error(
@@ -83,6 +93,11 @@ export function useNewTransactionModalController() {
       );
     }
   });
+
+  function handleCloseModal() {
+    reset(defaultTransaction);
+    closeNewTransactionModal();
+  }
 
   return {
     control,
@@ -94,7 +109,7 @@ export function useNewTransactionModalController() {
     isLoading,
     register,
     handleSubmit,
-    closeNewTransactionModal,
+    handleCloseModal,
   };
 }
 

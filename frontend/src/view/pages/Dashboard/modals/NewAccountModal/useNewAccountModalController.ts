@@ -18,6 +18,13 @@ const newAccountSchema = z.object({
 
 type NewAccount = z.infer<typeof newAccountSchema>;
 
+const defaultAccount: NewAccount = {
+  initialBalance: '0',
+  name: '',
+  type: 'CHECKING',
+  color: '',
+};
+
 export function useNewAccountModalController() {
   const { isNewAccountModalOpen, closeNewAccountModal } = useDashboard();
 
@@ -29,6 +36,7 @@ export function useNewAccountModalController() {
     handleSubmit: hookFormSubmit,
   } = useForm<NewAccount>({
     resolver: zodResolver(newAccountSchema),
+    defaultValues: defaultAccount,
   });
 
   const queryClient = useQueryClient();
@@ -48,11 +56,16 @@ export function useNewAccountModalController() {
 
       toast.success('Conta criada com sucesso!');
       closeNewAccountModal();
-      reset();
+      reset(defaultAccount);
     } catch (error) {
       toast.error('Erro ao criar conta');
     }
   });
+
+  function handleCloseModal() {
+    closeNewAccountModal();
+    reset(defaultAccount);
+  }
 
   return {
     control,
@@ -61,7 +74,7 @@ export function useNewAccountModalController() {
     isLoading,
     register,
     handleSubmit,
-    closeNewAccountModal,
+    handleCloseModal,
   };
 }
 

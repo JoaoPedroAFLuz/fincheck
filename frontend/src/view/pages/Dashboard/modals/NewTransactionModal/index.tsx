@@ -18,7 +18,7 @@ export function NewTransactionModal() {
     isLoading,
     register,
     handleSubmit,
-    closeNewTransactionModal,
+    handleCloseModal,
   } = useNewTransactionModalController();
 
   const isExpense = newTransactionType === 'EXPENSE';
@@ -27,7 +27,7 @@ export function NewTransactionModal() {
     <Modal
       title={isExpense ? 'Nova Despesa' : 'Nova Receita'}
       open={isNewTransactionModalOpen}
-      onClose={closeNewTransactionModal}
+      onClose={handleCloseModal}
     >
       <form className="w-full" onSubmit={handleSubmit}>
         <div>
