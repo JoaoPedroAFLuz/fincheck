@@ -14,6 +14,8 @@ export function useAccountController() {
 
   const windowWidth = useWindowWidth();
 
+  const isMobile = windowWidth < 768;
+
   const {
     areValuesVisible,
     isNewAccountModalOpen,
@@ -34,7 +36,7 @@ export function useAccountController() {
     accounts,
     currentBalance,
     sliderState,
-    windowWidth,
+    isMobile,
     areValuesVisible,
     isLoading: isFetching,
     isNewAccountModalOpen,

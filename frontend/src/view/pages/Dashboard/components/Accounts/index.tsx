@@ -15,7 +15,7 @@ export function Accounts() {
     accounts,
     currentBalance,
     sliderState,
-    windowWidth,
+    isMobile,
     areValuesVisible,
     isLoading,
     toggleValueVisibility,
@@ -78,7 +78,7 @@ export function Accounts() {
               <div>
                 <Swiper
                   spaceBetween={16}
-                  slidesPerView={windowWidth >= 500 ? 2.15 : 1.15}
+                  slidesPerView={isMobile ? 1.15 : 2.15}
                   onSlideChange={(swiper) => {
                     setSliderState({
                       isBeginning: swiper.isBeginning,
@@ -96,7 +96,11 @@ export function Accounts() {
 
                     <SliderNavigation
                       isBeginning={sliderState.isBeginning}
-                      isEnd={sliderState.isEnd}
+                      isEnd={
+                        sliderState.isEnd ||
+                        (isMobile && accounts.length <= 1) ||
+                        (!isMobile && accounts.length <= 2)
+                      }
                     />
                   </div>
 

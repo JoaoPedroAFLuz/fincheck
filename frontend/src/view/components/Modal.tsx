@@ -32,7 +32,7 @@ export function Modal({
 
         <RdxDialog.Content
           className={cn(
-            'fixed left-1/2 top-1/2 z-50 w-full max-w-[400px] -translate-x-1/2 -translate-y-1/2 space-y-10 rounded-2xl bg-white p-6 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.1)] outline-none',
+            'fixed left-1/2 top-1/2 z-50 w-[95%] max-w-[400px] -translate-x-1/2 -translate-y-1/2 space-y-10 rounded-2xl bg-white p-6 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.1)] outline-none',
             'data-[state=open]:animate-content-show',
           )}
         >
