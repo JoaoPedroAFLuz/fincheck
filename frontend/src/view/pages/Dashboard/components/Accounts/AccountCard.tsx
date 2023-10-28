@@ -19,7 +19,7 @@ export function AccountCard({ account, className }: AccountCardProps) {
       role="button"
       onClick={() => openEditAccountModal(account)}
       className={cn(
-        'flex h-[200px] flex-col justify-between rounded-2xl border-b-4 border-teal-950 bg-white p-4 text-gray-800',
+        'flex h-[200px] flex-col justify-between rounded-2xl border-b-4 border-teal-950 bg-white p-4 text-gray-800 transition-colors hover:bg-gray-200',
         className,
       )}
       style={{ borderColor: color }}

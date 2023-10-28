@@ -61,7 +61,11 @@ export function EditTransactionModal({
       open={open}
       onClose={onClose}
       rightAction={
-        <button type="button" onClick={handleOpenDeleteModal}>
+        <button
+          type="button"
+          onClick={handleOpenDeleteModal}
+          className="flex h-12 w-12 items-center justify-center rounded-full outline-none transition-colors hover:bg-gray-50"
+        >
           <TrashIcon className="h-6 w-6 text-red-900" />
         </button>
       }

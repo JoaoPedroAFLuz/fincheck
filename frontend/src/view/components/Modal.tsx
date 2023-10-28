@@ -39,7 +39,7 @@ export function Modal({
           <header className="flex h-12 items-center justify-between text-gray-800">
             <button
               onClick={onClose}
-              className="flex h-12 w-12 items-center justify-center outline-none"
+              className="flex h-12 w-12 items-center justify-center rounded-full outline-none transition-colors hover:bg-gray-50"
             >
               <Cross2Icon className="h-6 w-6" />
             </button>

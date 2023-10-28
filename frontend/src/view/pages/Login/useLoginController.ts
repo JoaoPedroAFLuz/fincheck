@@ -45,7 +45,7 @@ export function useLoginController() {
       toast.success('Login realizado com sucesso!');
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error('Credenciais inválidas!');
       }
     }
   });

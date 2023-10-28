@@ -54,7 +54,10 @@ export function Transactions() {
                 onSelect={handleChangeFilters('type')}
               />
 
-              <button onClick={handleOpenFiltersModal}>
+              <button
+                onClick={handleOpenFiltersModal}
+                className="rounded-full p-2 transition-colors hover:bg-gray-50"
+              >
                 <FilterIcon />
               </button>
             </div>
@@ -101,7 +104,7 @@ export function Transactions() {
                   className="h-40 w-40"
                 />
 
-                <span className="text-gray-700">
+                <span className="text-center text-gray-700">
                   Não encontramos nenhuma transação
                 </span>
               </div>
@@ -115,7 +118,7 @@ export function Transactions() {
                       key={transaction.id}
                       role="button"
                       onClick={() => handleOpenEditModal(transaction)}
-                      className="flex items-center gap-4 rounded-2xl bg-white p-4"
+                      className="flex items-center gap-4 rounded-2xl bg-white p-4 transition-colors hover:bg-gray-50"
                     >
                       <div className="flex flex-1 items-center gap-3">
                         <CategoryIcon

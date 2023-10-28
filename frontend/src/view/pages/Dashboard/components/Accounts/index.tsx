@@ -40,13 +40,15 @@ export function Accounts() {
                 {formatCurrency(currentBalance)}
               </strong>
 
-              <button
-                type="button"
-                onClick={toggleValueVisibility}
-                className="flex h-8 w-8 items-center justify-center"
-              >
-                <EyeIcon open={areValuesVisible} />
-              </button>
+              <div className="rounded-full p-1 transition-colors hover:bg-black/10">
+                <button
+                  type="button"
+                  onClick={toggleValueVisibility}
+                  className="flex h-8 w-8 items-center justify-center"
+                >
+                  <EyeIcon open={areValuesVisible} />
+                </button>
+              </div>
             </div>
           </div>
 

@@ -11,7 +11,7 @@ export function UserMenu() {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-teal-50">
+        <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-teal-50 transition-colors hover:bg-teal-100">
           <span className="text-sm font-medium tracking-tight text-teal-900">
             {initials.toUpperCase()}
           </span>

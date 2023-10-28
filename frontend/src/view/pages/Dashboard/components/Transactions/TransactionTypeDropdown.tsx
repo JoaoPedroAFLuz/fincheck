@@ -18,7 +18,7 @@ export function TransactionTypeDropdown({
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <div className="flex h-12 items-center gap-2">
+        <button className="flex h-12 items-center gap-2 rounded-2xl px-2 transition-colors hover:bg-gray-50">
           {selectedType === 'INCOME' && <IncomeIcon />}
           {selectedType === 'EXPENSE' && <ExpensesIcon />}
           {selectedType === undefined && <TransactionsIcon />}
@@ -30,7 +30,7 @@ export function TransactionTypeDropdown({
           </span>
 
           <ChevronDownIcon className="h-6 w-6 text-gray-900" />
-        </div>
+        </button>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Content className="w-[287px]">

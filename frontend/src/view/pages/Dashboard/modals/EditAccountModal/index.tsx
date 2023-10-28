@@ -44,7 +44,10 @@ export function EditAccountModal() {
       open={isEditAccountModalOpen}
       onClose={closeEditAccountModal}
       rightAction={
-        <button onClick={openDeleteAccountModal}>
+        <button
+          onClick={openDeleteAccountModal}
+          className="flex h-12 w-12 items-center justify-center rounded-full outline-none transition-colors hover:bg-gray-50"
+        >
           <TrashIcon className="h-6 w-6 text-red-900" />
         </button>
       }
