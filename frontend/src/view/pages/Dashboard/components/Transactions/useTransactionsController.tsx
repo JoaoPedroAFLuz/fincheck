@@ -14,11 +14,23 @@ export function useTransactionsController() {
     monthIndex: new Date().getMonth(),
     year: new Date().getFullYear(),
   });
+  const [balance, setBalance] = useState(0);
 
   const { areValuesVisible } = useDashboard();
 
   const { transactions, isLoading, isInitialLoading, refetchTransactions } =
     useTransactions(filters);
+
+  useEffect(() => {
+    const balance = transactions.reduce((acc, transaction) => {
+      const value =
+        transaction.type === 'INCOME' ? transaction.value : -transaction.value;
+
+      return acc + value;
+    }, 0);
+
+    setBalance(balance);
+  }, [transactions]);
 
   function handleChangeFilters<TFilter extends keyof TransactionFilters>(
     filter: TFilter,
@@ -74,6 +86,7 @@ export function useTransactionsController() {
     filters,
     transactions,
     transactionBeingEdited,
+    balance,
     areValuesVisible,
     isInitialLoading,
     isLoading,
