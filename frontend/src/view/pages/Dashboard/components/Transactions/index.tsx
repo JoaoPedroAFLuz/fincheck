@@ -4,6 +4,7 @@ import { MONTHS } from '@/app/config/constants';
 import { cn } from '@/app/utils/cn';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { formatDate } from '@/app/utils/formatDate';
+import { Input } from '@/view/components/Input';
 import { Spinner } from '@/view/components/Spinner';
 import { FilterIcon } from '@/view/components/icons/FilterIcon';
 import { CategoryIcon } from '@/view/components/icons/categories/CategoryIcon';
@@ -27,6 +28,7 @@ export function Transactions() {
     isLoading,
     isFiltersModalOpen,
     isEditModalOpen,
+    handleTransactionNameFilter,
     handleOpenFiltersModal,
     handleCloseFiltersModal,
     handleOpenEditModal,
@@ -86,6 +88,16 @@ export function Transactions() {
                   </SwiperSlide>
                 ))}
               </Swiper>
+            </div>
+
+            <div className="mt-4 w-full">
+              <Input
+                name="filter"
+                type="text"
+                placeholder="Pesquise pelo nome"
+                onChange={(e) => handleTransactionNameFilter(e.target.value)}
+                className=""
+              />
             </div>
           </header>
 

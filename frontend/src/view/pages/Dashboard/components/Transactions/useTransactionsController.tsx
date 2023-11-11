@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Transaction } from '@/app/entities/transactions';
 import { useTransactions } from '@/app/hooks/useTransactions';
@@ -14,23 +14,46 @@ export function useTransactionsController() {
     monthIndex: new Date().getMonth(),
     year: new Date().getFullYear(),
   });
-  const [balance, setBalance] = useState(0);
+  const [transactionNameFilter, setTransactionNameFilter] = useState('');
 
   const { areValuesVisible } = useDashboard();
 
-  const { transactions, isLoading, isInitialLoading, refetchTransactions } =
-    useTransactions(filters);
+  const {
+    transactions: transactionsData,
+    isLoading,
+    isInitialLoading,
+    refetchTransactions,
+  } = useTransactions(filters);
 
-  useEffect(() => {
-    const balance = transactions.reduce((acc, transaction) => {
+  const filteredTransactions: {
+    transactions: Transaction[];
+    balance: number;
+  } = useMemo(() => {
+    if (!transactionNameFilter) {
+      const balance = calculateBalance(transactionsData);
+
+      return { transactions: transactionsData, balance };
+    }
+
+    const lowerCaseFilter = transactionNameFilter.toLowerCase();
+
+    const filteredTransactions = transactionsData.filter((transaction) =>
+      transaction.name.toLowerCase().includes(lowerCaseFilter),
+    );
+
+    const balance = calculateBalance(filteredTransactions);
+
+    return { transactions: filteredTransactions, balance };
+  }, [transactionsData, transactionNameFilter]);
+
+  function calculateBalance(transactions: Transaction[]) {
+    return transactions.reduce((acc, transaction) => {
       const value =
         transaction.type === 'INCOME' ? transaction.value : -transaction.value;
 
       return acc + value;
     }, 0);
-
-    setBalance(balance);
-  }, [transactions]);
+  }
 
   function handleChangeFilters<TFilter extends keyof TransactionFilters>(
     filter: TFilter,
@@ -78,20 +101,25 @@ export function useTransactionsController() {
     setIsEditModalOpen(false);
   }
 
+  function handleTransactionNameFilter(value: string) {
+    setTransactionNameFilter(value);
+  }
+
   useEffect(() => {
     refetchTransactions();
   }, [filters, refetchTransactions]);
 
   return {
     filters,
-    transactions,
+    transactions: filteredTransactions.transactions,
     transactionBeingEdited,
-    balance,
+    balance: filteredTransactions.balance,
     areValuesVisible,
     isInitialLoading,
     isLoading,
     isFiltersModalOpen,
     isEditModalOpen,
+    handleTransactionNameFilter,
     handleOpenFiltersModal,
     handleCloseFiltersModal,
     handleOpenEditModal,
