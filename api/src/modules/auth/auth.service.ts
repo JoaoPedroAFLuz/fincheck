@@ -61,9 +61,7 @@ export class AuthService {
 
     const accessToken = await this.generateAccessToken(user.id);
 
-    return {
-      accessToken,
-    };
+    return { accessToken };
   }
 
   async authenticate(authenticateDto: AuthenticateDto) {

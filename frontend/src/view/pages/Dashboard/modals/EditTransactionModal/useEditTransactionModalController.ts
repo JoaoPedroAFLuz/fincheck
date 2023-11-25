@@ -77,10 +77,6 @@ export function useEditTransactionModalController({
         queryKey: ['transactions'],
       });
 
-      queryClient.invalidateQueries({
-        queryKey: [],
-      });
-
       toast.success(
         transaction!.type === 'EXPENSE'
           ? 'Despesa editada com sucesso!'
