@@ -31,6 +31,7 @@ export class TransactionsController {
     @Query('monthIndex', ParseIntPipe) monthIndex: number,
     @Query('year', ParseIntPipe) year: number,
     @Query('bankAccountId', OptionalParseUUIDPipe) bankAccountId?: string,
+    @Query('categoryId', OptionalParseUUIDPipe) categoryId?: string,
     @Query('type', new OptionalParseEnumPipe(TransactionType))
     type?: TransactionType,
   ) {
@@ -38,6 +39,7 @@ export class TransactionsController {
       monthIndex: monthIndex,
       year,
       bankAccountId,
+      categoryId,
       type,
     });
   }

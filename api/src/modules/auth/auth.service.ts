@@ -42,7 +42,7 @@ export class AuthService {
               // Income
               { name: 'Salário', icon: 'salary', type: 'INCOME' },
               { name: 'Freelance', icon: 'freelance', type: 'INCOME' },
-              { name: 'Outro', icon: 'other', type: 'INCOME' },
+              { name: 'Outras receitas', icon: 'other', type: 'INCOME' },
               // Expense
               { name: 'Casa', icon: 'home', type: 'EXPENSE' },
               { name: 'Alimentação', icon: 'food', type: 'EXPENSE' },
@@ -52,7 +52,7 @@ export class AuthService {
               { name: 'Roupas', icon: 'clothes', type: 'EXPENSE' },
               { name: 'Transporte', icon: 'transport', type: 'EXPENSE' },
               { name: 'Viagem', icon: 'travel', type: 'EXPENSE' },
-              { name: 'Outro', icon: 'other', type: 'EXPENSE' },
+              { name: 'Outras despesas', icon: 'other', type: 'EXPENSE' },
             ],
           },
         },

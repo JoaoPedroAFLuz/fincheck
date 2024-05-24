@@ -30,6 +30,10 @@ export class CreateTransactionDto {
   @IsDateString()
   date: string;
 
+  @IsNumber()
+  @IsPositive()
+  instalments: number;
+
   @IsEnum(TransactionType)
   type: TransactionType;
 }

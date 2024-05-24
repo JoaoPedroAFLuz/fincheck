@@ -23,6 +23,7 @@ export class TransactionsService {
       monthIndex: number;
       year: number;
       bankAccountId: string;
+      categoryId: string;
       type: TransactionType;
     },
   ) {
@@ -30,6 +31,7 @@ export class TransactionsService {
       where: {
         userId,
         bankAccountId: filters.bankAccountId,
+        categoryId: filters.categoryId,
         date: {
           gte: new Date(Date.UTC(filters.year, filters.monthIndex)),
           lt: new Date(Date.UTC(filters.year, filters.monthIndex + 1)),
@@ -67,21 +69,30 @@ export class TransactionsService {
   }
 
   async create(userId: string, createTransactionDto: CreateTransactionDto) {
-    const { bankAccountId, categoryId, name, value, date, type } =
+    const { bankAccountId, categoryId, name, value, date, instalments, type } =
       createTransactionDto;
 
     await this.validateEntitiesOwnership({ userId, bankAccountId, categoryId });
 
-    return this.transactionsRepository.create({
-      data: {
+    const transactions = [];
+
+    for (let i = 0; i < instalments; i++) {
+      const transactionDate = new Date(date);
+      transactionDate.setMonth(transactionDate.getMonth() + i);
+
+      transactions.push({
         userId,
         bankAccountId,
         categoryId,
         name,
-        value,
-        date,
+        value: value / instalments,
+        date: transactionDate,
         type,
-      },
+      });
+    }
+
+    return this.transactionsRepository.createMany({
+      data: transactions,
     });
   }
 
