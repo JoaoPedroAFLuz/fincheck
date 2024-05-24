@@ -72,12 +72,15 @@ export function useTransactionsController() {
 
   function handleApplyFilters({
     bankAccountId,
+    categoryId,
     year,
   }: {
     bankAccountId: string | undefined;
+    categoryId: string | undefined;
     year: number;
   }) {
     handleChangeFilters('bankAccountId')(bankAccountId);
+    handleChangeFilters('categoryId')(categoryId);
     handleChangeFilters('year')(year);
 
     setIsFiltersModalOpen(false);

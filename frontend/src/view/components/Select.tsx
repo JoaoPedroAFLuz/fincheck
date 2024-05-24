@@ -50,7 +50,8 @@ export function Select({
         <RdxSelect.Root value={value} onValueChange={handleSelect}>
           <RdxSelect.Trigger
             className={cn(
-              'relative h-[52px] w-full rounded-lg border border-gray-500 bg-white px-3 pt-4 text-left text-gray-800 outline-none transition-all focus:border-gray-800',
+              'relative h-[52px] w-full rounded-lg border border-gray-500 bg-white px-3 text-left text-gray-800 outline-none transition-all focus:border-gray-800',
+              placeholder && 'pt-4',
               error && '!border-red-900',
               className,
             )}

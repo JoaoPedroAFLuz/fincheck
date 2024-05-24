@@ -62,6 +62,22 @@ export function NewTransactionModal() {
           />
 
           <Controller
+            name="instalments"
+            control={control}
+            defaultValue={1}
+            render={({ field: { value, onChange } }) => (
+              <Input
+                name="instalments"
+                value={value}
+                type="number"
+                placeholder="Número de parcelas"
+                error={errors.instalments?.message}
+                onChange={onChange}
+              />
+            )}
+          />
+
+          <Controller
             name="categoryId"
             control={control}
             defaultValue=""

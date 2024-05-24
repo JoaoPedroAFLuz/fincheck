@@ -7,6 +7,7 @@ export type TransactionFilters = {
   monthIndex: number;
   year: number;
   bankAccountId?: string;
+  categoryId?: string;
   type?: TransactionType;
 };
 

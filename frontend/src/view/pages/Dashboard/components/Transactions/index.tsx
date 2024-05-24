@@ -199,6 +199,7 @@ export function Transactions() {
 
           <FilterModal
             open={isFiltersModalOpen}
+            transactionType={filters.type}
             onApplyFilters={handleApplyFilters}
             onClose={handleCloseFiltersModal}
           />

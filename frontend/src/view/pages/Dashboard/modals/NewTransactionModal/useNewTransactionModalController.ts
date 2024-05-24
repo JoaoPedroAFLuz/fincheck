@@ -16,6 +16,9 @@ const transactionSchema = z.object({
   name: z.string().nonempty('Nome é obrigatório'),
   categoryId: z.string().nonempty('Categoria é obrigatória'),
   bankAccountId: z.string().nonempty('Conta é obrigatória'),
+  instalments: z.coerce
+    .number()
+    .min(1, 'Número de parcelas deve ser maior ou igual a 1'),
   date: z.date(),
 });
 
@@ -26,6 +29,7 @@ const defaultTransaction: NewTransaction = {
   name: '',
   categoryId: '',
   bankAccountId: '',
+  instalments: 1,
   date: new Date(),
 };
 

@@ -1,14 +1,18 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
+import { TransactionType } from '@/app/entities/transactions';
 import { cn } from '@/app/utils/cn';
 import { Button } from '@/view/components/Button';
 import { Modal } from '@/view/components/Modal';
+import { Select } from '@/view/components/Select';
 import { useFiltersModalController } from './useFiltersModalController';
 
 interface FilterModalProps {
   open: boolean;
+  transactionType?: TransactionType;
   onApplyFilters(filters: {
     bankAccountId: string | undefined;
+    categoryId: string | undefined;
     year: number;
   }): void;
   onClose(): void;
@@ -16,16 +20,20 @@ interface FilterModalProps {
 
 export function FilterModal({
   open,
+  transactionType,
   onApplyFilters,
   onClose,
 }: FilterModalProps) {
   const {
     accounts,
     selectedBankAccountId,
+    categories,
+    selectedCategoryId,
     selectedYear,
     handleSelectBankAccount,
+    handleSelectCategory,
     handleChangeYear,
-  } = useFiltersModalController();
+  } = useFiltersModalController(transactionType);
 
   return (
     <Modal open={open} title="Filtros" onClose={onClose}>
@@ -53,6 +61,23 @@ export function FilterModal({
 
         <div className="space-y-2">
           <h1 className="text-lg font-bold tracking-tighter text-gray-800">
+            Categoria
+          </h1>
+
+          <div className="mt-2 flex flex-col space-y-2">
+            <Select
+              value={selectedCategoryId}
+              options={categories.map((category) => ({
+                value: category.id,
+                label: category.name,
+              }))}
+              onChange={(categoryId) => handleSelectCategory(categoryId)}
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <h1 className="text-lg font-bold tracking-tighter text-gray-800">
             Ano
           </h1>
 
@@ -75,6 +100,8 @@ export function FilterModal({
           onClick={() =>
             onApplyFilters({
               bankAccountId: selectedBankAccountId,
+              categoryId:
+                selectedCategoryId === 'all' ? undefined : selectedCategoryId,
               year: selectedYear,
             })
           }
